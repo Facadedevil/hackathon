@@ -1,4 +1,5 @@
 from django.http import JsonResponse
+from django.shortcuts import render
 from rest_framework.decorators import api_view
 from .transcription import AudioTranscriber
 from .summarizer import TextSummarizer
@@ -7,8 +8,13 @@ from .models import CallSummary
 import os
 from pydub import AudioSegment
 
-@api_view(['POST'])
+@api_view(['GET', 'POST'])
 def generate_summary(request):
+    if request.method == 'GET':
+        # Return a simple JSON response for GET requests
+        return JsonResponse({'message': 'Please send a POST request with an audio file to generate a summary'})
+    
+    # Handle POST request
     if 'audio' not in request.FILES:
         return JsonResponse({'error': 'No audio file provided'}, status=400)
     
