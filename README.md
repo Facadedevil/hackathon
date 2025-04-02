@@ -1,7 +1,7 @@
-# Hackathon Project
+# AI call Summarizer
 
 ## Description
-This project is developed in Python and is intended for use in a hackathon event. It showcases various features and functionalities to solve specific challenges presented during the hackathon.
+This project was developed in Python and is intended to be used in a hackathon event. It showcases various features and functionalities to solve specific challenges during the hackathon.
 
 ## Features
 - **Virtual Environment Setup**:
