@@ -7,6 +7,7 @@ from .title_generator import TitleGenerator
 from .models import CallSummary
 import os
 from pydub import AudioSegment
+import logging
 
 @api_view(['GET', 'POST'])
 def generate_summary(request):
@@ -30,7 +31,11 @@ def generate_summary(request):
         audio = AudioSegment.from_file(file_path)
         duration = len(audio) // 1000
         
-        call_summary = CallSummary.objects.create(audio_file=audio_file, status='processing')
+        call_summary = CallSummary.objects.create(
+            audio_file=audio_file, 
+            status='processing',
+            titles=[]  # Initialize with empty list to avoid NULL constraint
+        )
         
         transcriber = AudioTranscriber()
         transcription_result = transcriber.process_audio(file_path)
@@ -43,8 +48,17 @@ def generate_summary(request):
         summarizer = TextSummarizer()
         summary = summarizer.generate_summary(transcription_result['text'])
         
-        title_generator = TitleGenerator()
-        titles = title_generator.generate_titles(summary)
+        # Generate titles with error handling
+        try:
+            title_generator = TitleGenerator()
+            titles = title_generator.generate_titles(summary)
+            
+            # Make sure titles is not None and is a valid list
+            if titles is None or not isinstance(titles, list):
+                titles = ["Meeting Summary", "Call Summary", "Discussion Summary"]
+        except Exception as e:
+            logging.error(f"Error generating titles: {e}")
+            titles = ["Meeting Summary", "Call Summary", "Discussion Summary"]
         
         call_summary.transcription = transcription_result
         call_summary.summary = summary
