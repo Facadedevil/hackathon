@@ -1,4 +1,3 @@
-```markdown
 # Hackathon Project
 
 ## Description
@@ -84,9 +83,3 @@ If you would like to contribute to this project, please follow these steps:
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Acknowledgments
-- [Contributor 1]: Contributions or resources from contributor 1.
-- [Contributor 2]: Contributions or resources from contributor 2.
-```
-
-Feel free to customize this template with specific details about your project.
